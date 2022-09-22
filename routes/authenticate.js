@@ -6,21 +6,26 @@ const users = [
     {
         email: "sundar@google.com",
         password: "ilovegoogle123",
-        roles: ["admin"],
+        roles: ["viewer"],
+    },
+    {
+        email: "robot@google.com",
+        password: "helloworld123",
+        roles: ["admin", "viewer"],
     },
 ];
 
 router.post("/", async (req, res) => {
     const user = users.find((u) => u.email === req.body.email);
     if (!user || user.password !== req.body.password) {
-        return res.send({ status: 400, message: "invalid email or password" });
+        return res.status(400).send({ message: "invalid email or password" });
     }
 
     const token = jwt.sign(user, "some private key that shouldn't be visible 💩", {
         expiresIn: "15m",
     });
 
-    res.send({ status: 200, message: "success", token: token });
+    res.send({ message: "success", token: token });
 });
 
 module.exports = router;
