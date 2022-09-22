@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
         return res.status(400).send({ message: "invalid email or password" });
     }
 
-    const token = jwt.sign(user, "some private key that shouldn't be visible 💩", {
+    const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
         expiresIn: "15m",
     });
 
